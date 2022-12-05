@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 import Web3Modal from "web3modal";
 import { providers, Contract } from "ethers";
 import { useEffect, useRef, useState } from "react";
-import address from "../contract/Whitelist-address.json";
+import contract from "../contract/Whitelist-address.json";
 import abi from "../contract/Whitelist.json";
 
 export default function Home() {
@@ -59,7 +59,7 @@ export default function Home() {
       const signer = await getProviderOrSigner(true);
       // Create a new instance of the Contract with a Signer, which allows
       // update methods
-      const whitelistContract = new Contract(address.address, abi.abi, signer);
+      const whitelistContract = new Contract(contract.address, abi.abi, signer);
       // call the addAddressToWhitelist from the contract
       const tx = await whitelistContract.addAddressToWhitelist();
       setLoading(true);
@@ -85,7 +85,7 @@ export default function Home() {
       // We connect to the Contract using a Provider, so we will only
       // have read-only access to the Contract
       const whitelistContract = new Contract(
-        address.address,
+        contract.address,
         abi.abi,
         provider
       );
@@ -106,8 +106,8 @@ export default function Home() {
       // We will need the signer later to get the user's address
       // Even though it is a read transaction, since Signers are just special kinds of Providers,
       // We can use it in it's place
-      const signer = await getProviderOrSigner(true);
-      const whitelistContract = new Contract(address.address, abi.abi, signer);
+      const signer = (await getProviderOrSigner(true)) as any;
+      const whitelistContract = new Contract(contract.address, abi.abi, signer);
       // Get the address associated to the signer which is connected to  MetaMask
       const address = await signer.getAddress();
       // call the whitelistedAddresses from the contract
